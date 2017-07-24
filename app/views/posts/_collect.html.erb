@@ -1,0 +1,11 @@
+<% if post.liked_users.any? %>
+  <%= post.liked_users.map{ |u| u.display_name }.join(",") %> 收藏
+<% end %>
+
+<% if current_user # 有登入才可以按 %>
+  <% if post.find_collect(current_user) %>
+    <%= link_to "取消", uncollect_post_path(post), :method => :post, :remote => true, :class => "btn btn-primary" %>
+  <% else %>
+    <%= link_to "❤", collect_post_path(post), :method => :post, :remote => true, :class => "btn btn-primary" %>
+  <% end %>
+<% end %>

@@ -28,6 +28,19 @@ class PostsController < ApplicationController
     like.destroy
     render "like"
   end
+  def collect
+    @post = Post.find(params[:id])
+    unless @post.find_collect(current_user)  # 如果已经按 ❤过了，就略过不再新增
+      Collect.create( :user => current_user, :post => @post)
+    end
+  end
+
+  def uncollect
+    @post = Post.find(params[:id])
+    collect = @post.find_collect(current_user)
+    collect.destroy
+    render "collect"
+  end
 
 
   protected
