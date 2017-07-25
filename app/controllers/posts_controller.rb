@@ -67,10 +67,17 @@ class PostsController < ApplicationController
     render "collect"
   end
 
+    def update
+      @post = Post.find(params[:id])
+      @post.update!( post_params )
+
+      render :json => { :id => @post.id, :message => "ok"}
+    end
+
 
   protected
 
   def post_params
-    params.require(:post).permit(:content)
+    params.require(:post).permit(:content, :category_id)
   end
 end
