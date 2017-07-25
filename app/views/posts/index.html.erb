@@ -43,7 +43,7 @@
   // 当捲轴动的时候，会触发这个事件
   $(window).scroll(function(){
     // 当捲到最下面的时候
-    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+    if ((window.innerHeight  window.scrollY) >= document.body.offsetHeight) {
       var url = "/posts?max_id=" + current_post_id;
       if (url) {
         $.ajax({
@@ -99,5 +99,20 @@
    });
  </script>
  <script>
-   $(".raty").raty( { path: '/images/' } );
+  $(".raty").raty({
+      path: '/images/',
+      score: function() { return $(this).data('score'); },
+      click: function(score) {
+        var that = this;
+        $.ajax({
+          url: $(this).data("score-url"),
+          method: "POST",
+          data: { score: score },
+          dataType: "json",
+          success: function(data){
+            $(that).closest(".panel-body").find(".average-score").html( data["average_score"] );
+          }
+        })
+      }
+    });
  </script>
